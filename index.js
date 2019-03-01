@@ -10,7 +10,13 @@ app.use(helmet());
 app.use(cors());
 
 const predictions = require("./src/routes/predictions");
-app.use("/hodor/api/predictions", predictions);
+app.use("/hodor/api/:group/:user/predictions", predictions);
+
+const groups = require("./src/routes/groups");
+app.use("/hodor/api/groups", groups);
+
+const users = require("./src/routes/users");
+app.use("/hodor/api/:group/users", users);
 
 mongoose.connect(config.get("db_connection_string"), { useNewUrlParser: true })
   .then(() => console.log("Connected to MongoDB..."))
