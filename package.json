@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/gersonnoboa/hodor-backend#readme",
   "dependencies": {
+    "bcrypt": "^3.0.4",
     "config": "^3.0.1",
     "cors": "^2.8.5",
     "express": "^4.16.4",
