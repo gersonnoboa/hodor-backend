@@ -1,3 +1,4 @@
 {
-  "name": "Hodor Backend"
+  "name": "Hodor Backend",
+  "jwtPrivateKey": ""
 }
