@@ -27,6 +27,7 @@ router.post("/", async (req, res) => {
   const password = await hashedPassword(req.body.password);
 
   user = new User({
+    name: req.body.name,
     username: req.body.username,
     password: password
   });

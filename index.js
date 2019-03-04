@@ -26,8 +26,8 @@ app.use("/hodor/api/users", users);
 const auth = require("./src/routes/auth");
 app.use("/hodor/api/auth", auth);
 
-const groupUser = require("./src/routes/group-users");
-app.use("/hodor/api/group-user", groupUser);
+const groupUsers = require("./src/routes/group-users");
+app.use("/hodor/api/group-users", groupUsers);
 
 mongoose.connect(config.get("db_connection_string"), { useNewUrlParser: true })
   .then(() => console.log("Connected to MongoDB..."))
