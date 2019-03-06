@@ -5,14 +5,14 @@ const bcrypt = require("bcrypt");
 const User = require("../data/schemas/user");
 
 router.post("/", async (req, res) => {
-  let user = await User.findOne({ email: req.body.email });
+  let user = await User.findOne({ username: req.body.username });
   if (!user) { return res.status(400).send("Invalid username or password"); }
 
   const isPasswordValid = await bcrypt.compare(req.body.password, user.password);
   if (!isPasswordValid) { return res.status(400).send("Invalid username or password"); }
 
   const token = user.generateAuthToken();  
-  res.send(token);
+  res.send({ token: token });
 });
 
 module.exports = router;

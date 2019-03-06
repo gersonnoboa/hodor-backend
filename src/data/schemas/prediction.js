@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const predictionSchema = mongoose.Schema({
-  character: String,
+  name: String,
   status: String,
   user: {
     type: mongoose.Schema.Types.ObjectId,

@@ -12,18 +12,26 @@ router.get("/", auth, async (req, res) => {
 
 router.post("/", auth, async (req, res) => {
   const user = req.user._id;
-  const character = req.body.character;
-  const status = req.body.status;
 
-  const document = {
-    character: character,
-    status: status,
-    user: user
-  }
+  let predictions = [];
+  req.body.predictions.forEach(element => {
+    let status = element.status;
+
+    if (status != "") {
+      const prediction = {
+        name: element.name,
+        status: element.status,
+        user: user
+      }
+
+      predictions.push(prediction);
+    }
+  });
 
   try {
-    const result = await Prediction.updateOne({ character: character, user: user }, document, { upsert: true });
-    res.send(result);
+    let result = await Prediction.deleteMany({ user: user});
+    result = await Prediction.insertMany(predictions);
+    res.send({ "status": "OK" });
   } catch (error) {
     res.status(400).send(error);
   }
