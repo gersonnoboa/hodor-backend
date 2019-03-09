@@ -1,13 +1,14 @@
 const express = require("express");
 const router = express.Router({ mergeParams: true });
 const mongoose = require("mongoose");
+const auth = require("../middleware/auth");
 
 const Result = require("../data/schemas/result");
 const Prediction = require("../data/schemas/prediction");
 const Character = require("../data/schemas/character");
 const User = require("../data/schemas/user");
 
-router.get("/", async (req, res) => {
+router.get("/", auth, async (req, res) => {
   await Result.deleteMany();
 
   try {

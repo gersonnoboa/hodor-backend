@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 const auth = require("../middleware/auth");
 
 const User = require("../data/schemas/user");
+const Result = require("../data/schemas/result");
 
 router.get("/me", auth, async (req, res) => {
   const id = req.user._id;
@@ -12,6 +13,15 @@ router.get("/me", auth, async (req, res) => {
     name: user.name,
     username: user.username
   });
+});
+
+router.get("/results", auth, async (req, res) => {
+  try {
+    const result = await Result.findOne({ user: req.user._id });
+    res.send(result);
+  } catch (error) {
+    return res.status(400).send(error);
+  }
 });
 
 router.post("/", async (req, res) => {
