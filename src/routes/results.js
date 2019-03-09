@@ -41,7 +41,48 @@ router.get("/", auth, async (req, res) => {
     
     res.send(results);
   } catch(error) {
-    return res.status(400).send(error + "");
+    return res.status(400).send(error);
+  }
+});
+
+router.get("/user", auth, async (req, res) => {
+  let id = req.user._id;
+
+  try {
+    const predictions = await Prediction.aggregate([
+      {
+        $match: { "user": new mongoose.Types.ObjectId(id) }
+      },
+      {
+        $group: {
+          count: { $sum: 1 },
+          _id: "$user",
+          "predictions": {
+            $push: "$$ROOT"
+          }
+        }
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "_id",
+          foreignField: "_id",
+          as: "user"
+        }
+      },
+      {
+        $unwind: "$user"
+      },
+    ]);
+
+    const characters = await Character.find();
+    const results = calculateScores(predictions, characters);
+    await Result.deleteMany({ user: id });
+    await Result.insertMany(results);
+
+    res.send(results);
+  } catch (error) {
+    return res.status(400).send(error);
   }
 });
 
