@@ -34,11 +34,21 @@ router.post("/", async (req, res) => {
     return res.status(400).send("Error saving user.");
   } 
   
-  const password = await hashedPassword(req.body.password);
+  let bodyUsername = req.body.username;
+  let bodyPassword = req.body.password;
+
+  if (bodyUsername == null || bodyUsername.trim().length < 6) {
+    return res.status(400).send("Username is mandatory and should be at least six characters long");
+  }
+
+  if (bodyPassword == null || bodyPassword.trim().length < 6) {
+    return res.status(400).send("Password is mandatory and should be at least six characters long");
+  }
+
+  const password = await hashedPassword(bodyPassword);
 
   user = new User({
-    name: req.body.name,
-    username: req.body.username,
+    username: bodyUsername,
     password: password
   });
 
