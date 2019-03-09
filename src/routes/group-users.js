@@ -1,9 +1,11 @@
 const express = require("express");
 const router = express.Router({ mergeParams: true });
 const auth = require("../middleware/auth");
+const mongoose = require("mongoose");
 
 const GroupUser = require("../data/schemas/group-user");
 const Group = require("../data/schemas/group");
+const User = require("../data/schemas/user");
 
 router.get("/", auth, async (req, res) => {
   const user = req.user._id;
@@ -18,8 +20,58 @@ router.get("/", auth, async (req, res) => {
 });
 
 router.get("/:id", auth, async (req, res) => {
-  const users = await GroupUser.find({group: req.params.id})
-  res.send(users);
+  let groupId = req.params.id;
+
+  try {
+    const users = await GroupUser
+    .aggregate([
+      {
+        $match: { "group" : new mongoose.Types.ObjectId(groupId) }
+      },
+      {
+        $lookup: {
+          from: "results",
+          localField: "user",
+          foreignField: "user",
+          as: "results"
+        }
+      },
+      {
+        $lookup: {
+          from: "groups",
+          localField: "group",
+          foreignField: "_id",
+          as: "group"
+        }
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "user",
+          foreignField: "_id",
+          as: "user"
+        }
+      },
+      {
+        $unwind: "$user"
+      },
+      {
+        $unwind: "$group"
+      },
+      {
+        $unwind: "$results"
+      },
+      {
+        $project: {
+          "user.password": 0
+        }
+      }
+    ]);
+
+    res.send(users);
+  } catch(error) {
+    return res.status(400).send(error);
+  }
 });
 
 router.post("/", auth, async (req, res) => {

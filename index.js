@@ -4,6 +4,7 @@ const helmet = require("helmet");
 const config = require("config");
 const mongoose = require("mongoose");
 const cors = require('cors');
+const general = require("./src/general/general");
 
 if (!config.get("jwtPrivateKey")) {
   console.error("FATAL ERROR: Private key is not defined");
@@ -29,13 +30,22 @@ app.use("/hodor/api/auth", auth);
 const groupUsers = require("./src/routes/group-users");
 app.use("/hodor/api/group-users", groupUsers);
 
+const results = require("./src/routes/results");
+app.use("/hodor/api/results", results);
+
 mongoose.connect(config.get("db_connection_string"), { useNewUrlParser: true })
   .then(() => console.log("Connected to MongoDB..."))
-  .catch(err => console.error(err))
+  .catch(err => {
+    console.error(err)
+    process.exit(1);
+  });
 
 app.get('/hodor', (req, res) => res.send('Hello World!'))
 
 const port = process.env.PORT || 8081;
+
+general.fillCharacters();
+
 app.listen(port, '0.0.0.0', () => {
   console.log(`Listening to port ${port}`);
 });
