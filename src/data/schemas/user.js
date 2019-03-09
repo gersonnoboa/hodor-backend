@@ -8,11 +8,12 @@ const userSchema = mongoose.Schema({
     type: String,
     unique: true
   },
-  password: String
+  password: String,
+  isAdmin: Boolean
 });
 
 userSchema.methods.generateAuthToken = function() {
-  const token = jwt.sign({ _id: this._id }, config.get("jwtPrivateKey"), { expiresIn: '30d' });
+  const token = jwt.sign({ _id: this._id, isAdmin: this.isAdmin }, config.get("jwtPrivateKey"), { expiresIn: '30d' });
   return token
 }
 

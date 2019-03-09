@@ -38,7 +38,7 @@ router.post("/", async (req, res) => {
       username: user.username
     });
   } catch (error) {
-    res.status(400).send(error);
+    return res.status(400).send(error);
   }
 });
 

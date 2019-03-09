@@ -13,7 +13,7 @@ router.post("/", auth, async (req, res) => {
     const result = await group.save();
     res.send(result);
   } catch (error) {
-    res.status(400).send(error);
+    return res.status(400).send(error);
   }
 });
 

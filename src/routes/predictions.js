@@ -33,7 +33,7 @@ router.post("/", auth, async (req, res) => {
     result = await Prediction.insertMany(predictions);
     res.send({ "status": "OK" });
   } catch (error) {
-    res.status(400).send(error);
+    return res.status(400).send(error);
   }
 });
 
