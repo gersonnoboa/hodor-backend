@@ -25,8 +25,15 @@ router.get("/results", auth, async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
+  let bodyUsername = req.body.username;
+  if (bodyUsername == null || bodyUsername.trim().length < 6) {
+    return res.status(400).send("Username is mandatory and should be at least six characters long");
+  }
+
+  bodyUsername = bodyUsername.toLowerCase();
+
   try {
-    let user = await User.findOne({ username: req.body.username });
+    let user = await User.findOne({ username: bodyUsername });
     if (user) {
       return res.status(400).send("User already registered");
     }
@@ -34,12 +41,7 @@ router.post("/", async (req, res) => {
     return res.status(400).send("Error saving user.");
   } 
   
-  let bodyUsername = req.body.username;
   let bodyPassword = req.body.password;
-
-  if (bodyUsername == null || bodyUsername.trim().length < 6) {
-    return res.status(400).send("Username is mandatory and should be at least six characters long");
-  }
 
   if (bodyPassword == null || bodyPassword.trim().length < 6) {
     return res.status(400).send("Password is mandatory and should be at least six characters long");
