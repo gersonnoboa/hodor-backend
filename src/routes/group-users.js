@@ -65,6 +65,9 @@ router.get("/:id", auth, async (req, res) => {
         $project: {
           "user.password": 0
         }
+      },
+      {
+        $sort: { "results.score": -1 }
       }
     ]);
 
