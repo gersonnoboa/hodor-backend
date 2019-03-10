@@ -26,8 +26,8 @@ router.get("/results", auth, async (req, res) => {
 
 router.post("/", async (req, res) => {
   let bodyUsername = req.body.username;
-  if (bodyUsername == null || bodyUsername.trim().length < 6) {
-    return res.status(400).send("Username is mandatory and should be at least six characters long");
+  if (bodyUsername == null || bodyUsername.trim().length < 4) {
+    return res.status(400).send("Username is mandatory and should be at least four characters long");
   }
 
   bodyUsername = bodyUsername.toLowerCase();
