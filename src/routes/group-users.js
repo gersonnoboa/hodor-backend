@@ -85,11 +85,15 @@ router.post("/", auth, async (req, res) => {
     return res.status(400).send("Group ID cannot be empty");
   }
 
-  const previous = await GroupUser.findOne({ user: user, group: groupId});
-  if (previous) { return res.status(400).send("You have already joined that group"); }
+  try {
+    const previous = await GroupUser.findOne({ user: user, group: groupId });
+    if (previous) { return res.status(400).send("You have already joined that group"); }
 
-  const existingGroup = await Group.findOne({ _id: groupId})
-  if (!existingGroup) { return res.status(400).send("Invalid group ID"); }
+    const existingGroup = await Group.findById(groupId);
+    if (!existingGroup) { return res.status(400).send("Invalid group ID"); }
+  } catch (error) {
+    return res.status(400).send("Invalid group ID");
+  }
 
   const group = new GroupUser({
     user: user,
