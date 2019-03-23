@@ -5,6 +5,7 @@ const config = require("config");
 const mongoose = require("mongoose");
 const cors = require('cors');
 const general = require("./src/general/general");
+const path = require('path');
 
 if (!config.get("jwtPrivateKey")) {
   console.error("FATAL ERROR: Private key is not defined");
@@ -33,8 +34,12 @@ app.use("/hodor/api/group-users", groupUsers);
 const results = require("./src/routes/results");
 app.use("/hodor/api/results", results);
 
+const dir = path.join(__dirname, 'public');
+app.use(express.static(dir));
+
 mongoose.connect(config.get("db_connection_string"), { useNewUrlParser: true })
   .then(() => console.log("Connected to MongoDB..."))
+  .then(() => fillCharacters())
   .catch(err => {
     console.error(err)
     process.exit(1);
@@ -44,8 +49,10 @@ app.get('/hodor', (req, res) => res.send('Hello World!'))
 
 const port = process.env.PORT || 8081;
 
-general.fillCharacters();
-
 app.listen(port, '0.0.0.0', () => {
   console.log(`Listening to port ${port}`);
 });
+
+async function fillCharacters() {
+  await general.fillCharacters();
+}

@@ -2,7 +2,8 @@ const mongoose = require("mongoose");
 
 const characterSchema = mongoose.Schema({
   name: String,
-  status: String
+  status: String,
+  image: String
 });
 
 const Character = mongoose.model("Character", characterSchema);

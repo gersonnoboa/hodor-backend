@@ -2,20 +2,22 @@ const express = require('express');
 const Character = require("../data/schemas/character");
 
 module.exports.fillCharacters = async function() {
-  const isCharacterListSaved = await Character.find();
+  //const isCharacterListSaved = await Character.find();
   
-  if (isCharacterListSaved != null && isCharacterListSaved.length > 0) { return }
+  //if (isCharacterListSaved != null && isCharacterListSaved.length > 0) { return }
 
   const characterStringArray = getCharacterArray();
 
   const characters = characterStringArray.map(element => {
     return {
       name: element,
-      status: "Alive"
+      status: "Alive",
+      image: getImagePath(element)
     }
   });
 
   try {
+    await Character.deleteMany();
     await Character.insertMany(characters);
   } catch(error) {
     console.error(error);
@@ -55,4 +57,13 @@ function getCharacterArray() {
     "Beric Dondarrion",
     "Qyburn"
   ];
+}
+
+function getImagePath(character) {
+  return "/images/" + getImageName(character);
+}
+
+function getImageName(character) {
+  let imageName = character.replace(/\s/g, '');
+  return imageName.toLowerCase() + ".jpg";
 }
