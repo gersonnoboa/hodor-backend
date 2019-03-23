@@ -34,7 +34,7 @@ router.get("/", auth, async (req, res) => {
         $project: {
           "name": 1,
           "status": 1,  
-          "image": 1, 
+          "image": 1,
           "user_prediction": "$prediction.status"
         }
       },
@@ -57,17 +57,17 @@ router.post("/", auth, async (req, res) => {
 
   let predictions = [];
 
-  if (req.body.predictions == null || req.body.predictions.length() == 0) {
+  if (req.body.predictions == null || req.body.predictions.lenght == 0) {
     return res.status(400).send("Invalid predictions");
   }
 
   req.body.predictions.forEach(element => {
-    let status = element.status;
+    let status = element.statusPrediction;
 
     if (status != "") {
       const prediction = {
         name: element.name,
-        status: element.status,
+        status: element.statusPrediction,
         user: user
       }
 
