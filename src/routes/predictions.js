@@ -2,12 +2,14 @@ const express = require("express");
 const router = express.Router({mergeParams: true});
 const auth = require("../middleware/auth");
 const mongoose = require("mongoose");
+const general = require("../general/general");
 
 const Prediction = require("../data/schemas/prediction");
 const Character = require("../data/schemas/character");
 
 router.get("/", auth, async (req, res) => {
   let user = req.user._id;
+  let canEdit = general.canEditCharacters();
   
   try {
     const predictions = await Character.aggregate([
@@ -35,7 +37,8 @@ router.get("/", auth, async (req, res) => {
           "name": 1,
           "status": 1,  
           "image": 1,
-          "user_prediction": "$prediction.status"
+          "user_prediction": "$prediction.status",
+          canEdit: { $literal: canEdit }
         }
       },
       {
@@ -53,6 +56,11 @@ router.get("/", auth, async (req, res) => {
 });
 
 router.post("/", auth, async (req, res) => {
+  const canEdit = general.canEditCharacters();
+  if (!canEdit) {
+    return res.status(403).send("You cannot edit your predictions anymore.");
+  }
+  
   const user = req.user._id;
 
   let predictions = [];

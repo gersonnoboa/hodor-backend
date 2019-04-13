@@ -67,3 +67,9 @@ function getImageName(character) {
   let imageName = character.replace(/\s/g, '');
   return imageName.toLowerCase() + ".jpg";
 }
+
+module.exports.canEditCharacters = function() {
+  const deadline = new Date(2019, 3, 14, 23);
+  console.log(deadline);
+  return new Date() < deadline;
+}
