@@ -8,7 +8,7 @@ const Prediction = require("../data/schemas/prediction");
 const Character = require("../data/schemas/character");
 const User = require("../data/schemas/user");
 
-router.get("/", auth, async (req, res) => {
+router.get("/", async (req, res) => {
   await Result.deleteMany();
 
   try {
