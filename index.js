@@ -34,6 +34,9 @@ app.use("/hodor/api/group-users", groupUsers);
 const results = require("./src/routes/results");
 app.use("/hodor/api/results", results);
 
+const stats = require("./src/cases/statistics/statistics.router");
+app.use("/hodor/api/stats", stats);
+
 const dir = path.join(__dirname, 'public');
 app.use(express.static(dir));
 
