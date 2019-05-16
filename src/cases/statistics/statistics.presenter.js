@@ -1,25 +1,21 @@
-const PredictionsRepository = require("../../data/repositories/predictions.repository");
+const StatisticsInteractor = require("../../cases/statistics/statistics.interactor");
 
 class StatisticsPresenter {
   constructor() {
-    this.repository = new PredictionsRepository();
+    this.interactor = new StatisticsInteractor();
   }
 
   async getAllCharacterData() {
-    let data = await this.repository.getPredictions();
-    calculateCharacterStatistics(data);
+    let data = await this.interactor.getAllCharacterData();
+
+    return data;
   }
 
-  getStatusData() {
-    return this.repository.getPredictionsByStatus(status);
-  }
-}
+  async getStatusData() {
+    let data = await this.repository.getPredictionsByStatus(status);
 
-function calculateCharacterStatistics(data) {
-  console.log(data);
-  data.forEach(element => {
-    console.log(element);
-  });
+    return data;
+  }
 }
 
 module.exports = StatisticsPresenter;
