@@ -1,13 +1,13 @@
 const express = require("express");
 const router = express.Router({ mergeParams: true });
 
-const StatisticsPresenter = require("./statistics.presenter");
-const presenter = new StatisticsPresenter();
+const StatisticsService = require("./statistics.service");
+const service = new StatisticsService();
 
 router.get("/characters", async (req, res) => {
-  await presenter.getAllCharacterData();
+  let data = await service.getAllCharacterData();
 
-  res.status(200).send("Ok");
+  res.status(200).send(data);
 });
 
 module.exports = router;
