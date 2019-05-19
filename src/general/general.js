@@ -2,9 +2,9 @@ const express = require('express');
 const Character = require("../data/schemas/character");
 
 module.exports.fillCharacters = async function() {
-  //const isCharacterListSaved = await Character.find();
+  const isCharacterListSaved = await Character.find();
   
-  //if (isCharacterListSaved != null && isCharacterListSaved.length > 0) { return }
+  if (isCharacterListSaved != null && isCharacterListSaved.length > 0) { return }
 
   const characterStringArray = getCharacterArray();
 
