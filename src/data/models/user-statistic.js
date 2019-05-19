@@ -1,50 +1,50 @@
 class UserStatistic {
   constructor() {
-    this.cerseiAlive = false;
-    this.daenerysAlive = false;
+    this.isCerseiAlive = false;
+    this.isDaenerysAlive = false;
 
-    this.jonAlive = false;
-    this.sansaAlive = false;
-    this.aryaAlive = false;
-    this.branAlive = false;
+    this.isJonAlive = false;
+    this.isSansaAlive = false;
+    this.isAryaAlive = false;
+    this.isBranAlive = false;
+    
+    this.isHoundAlive = false;
+    this.isMountainAlive = false;
 
-    this.atLeastOneWhiteWalker = false;
-
-    this.houndAlive = false;
-    this.mountainAlive = false;
+    this.isNightKingAlive = false;
   }
 
   determineStatus(element) {
     if (this.isAlive("Cersei Lannister", element)) {
-      this.cerseiAlive = true;
+      this.isCerseiAlive = true;
     }
 
     if (this.isAlive("Daenerys Targaryen", element)) {
-      this.daenerysAlive = true;
+      this.isDaenerysAlive = true;
     }
 
     if (this.isAlive("Jon Snow", element)) {
-      this.jonAlive = true;
+      this.isJonAlive = true;
     }
 
     if (this.isAlive("Sansa Stark", element)) {
-      this.sansaAlive = true;
+      this.isSansaAlive = true;
     }
 
     if (this.isAlive("Arya Stark", element)) {
-      this.aryaAlive = true;
+      this.isAryaAlive = true;
     }
 
     if (this.isAlive("Bran Stark", element)) {
-      this.branAlive = true;
+      this.isBranAlive = true;
     }
 
     if (this.isAlive("The Hound", element)) {
-      this.houndAlive = true;
+      this.isHoundAlive = true;
     }
 
     if (this.isAlive("The Mountain", element)) {
-      this.mountainAlive = true;
+      this.isMountainAlive = true;
     }
 
     this.checkWhiteWalker(element);
@@ -56,7 +56,7 @@ class UserStatistic {
 
   checkWhiteWalker(element) {
     if (element.status == "White Walker") {
-      this.hasWhiteWalker = true;
+      this.isNightKingAlive = true;
     }
   }
 }
